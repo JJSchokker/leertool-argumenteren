@@ -1,11 +1,10 @@
 """
-Leertool Digitale Geletterdheid
+Leertool Argumenteren
 ==============================
 
-Een educatieve tool voor basisschoolleerlingen (groep 7/8) om kritisch 
+Een educatieve tool voor basisschoolleerlingen (bovenbouw groep 6/7/8) om kritisch 
 denken en mediawijsheid te oefenen via gesimuleerde online discussies.
 
-Auteur: Johan Schokker
 """
 
 import streamlit as st
@@ -29,8 +28,8 @@ from utils import context_weaver, log_response, lees_log
 # =============================================================================
 
 st.set_page_config(
-    page_title="Leertool Digitale Geletterdheid",
-    page_icon="🚗",
+    page_title="Leertool Argumenteren",
+    page_icon="",
     layout="wide"
 )
 
@@ -80,10 +79,10 @@ st.markdown("""
 header_col1, header_col2 = st.columns([3, 1])
 
 with header_col1:
-    st.title("🚗⚡ Leertool Digitale Geletterdheid")
+    st.title("Leertool Argumenteren")
     st.markdown(
-        '<div class="stelling-box">📢 De stelling: '
-        '<em>"Elektrische auto\'s zijn goed voor het milieu"</em></div>',
+        '<div class="stelling-box"De stelling van vandaag: '
+        '<em>"Elektrische auto\'s zijn goed voor het milieu!"</em></div>',
         unsafe_allow_html=True
     )
 
@@ -117,7 +116,7 @@ col1, col2 = st.columns([1, 2])
 with col1:
     
     # Model selectie
-    st.subheader("🤖 Kies Model")
+    st.subheader("Kies Model")
     model_cols = st.columns(4)
     for i, col in enumerate(model_cols):
         model_id = f"model_{i+1}"
@@ -134,11 +133,11 @@ with col1:
     st.divider()
     
     # Timer
-    st.subheader("⏱️ Tijd")
+    st.subheader("Tijd")
     TIJD_MINUTEN = 15
     
     if st.session_state.start_tijd is None:
-        if st.button("🚀 Start Discussie", type="primary", use_container_width=True):
+        if st.button("Start Discussie", type="primary", use_container_width=True):
             st.session_state.start_tijd = datetime.now()
             st.session_state.messages = []
             st.session_state.tijd_is_om = False
@@ -158,7 +157,7 @@ with col1:
     st.divider()
     
     # Agent selectie
-    st.subheader("👥 Gesprekspartner")
+    st.subheader("👥 Gesprekspartners")
     agent_naam = st.selectbox(
         "Kies wie je wilt spreken:",
         list(AGENTEN.keys()),
@@ -181,7 +180,7 @@ with col1:
     st.divider()
     
     # Hulp functie
-    with st.expander("ℹ️ Uitleg vragen"):
+    with st.expander("Vraag om uitleg"):
         uitleg_tekst = st.text_area(
             "Plak tekst om uitleg te krijgen:",
             height=60,
@@ -199,7 +198,7 @@ with col1:
     st.divider()
     
     # Notities
-    st.subheader("📝 Notities")
+    st.subheader("Schrijf hier je argumenten")
     st.session_state.aantekeningen = st.text_area(
         "Maak aantekeningen:",
         st.session_state.aantekeningen,
@@ -208,14 +207,14 @@ with col1:
     )
     if st.session_state.aantekeningen:
         st.download_button(
-            "💾 Download notities",
+            "Download",
             st.session_state.aantekeningen,
             "notities.txt"
         )
 
 # --- RECHTER KOLOM: Chat ---
 with col2:
-    st.subheader("💬 Discussie")
+    st.subheader("Discussie")
     
     # Chat container
     chat_container = st.container(height=480)
@@ -309,7 +308,7 @@ st.divider()
 col_f1, col_f2 = st.columns([2, 1])
 
 with col_f1:
-    st.caption("🎓 Leertool Digitale Geletterdheid | Model Vergelijking")
+    st.caption("Leertool Argumenteren | Model Vergelijking")
 
 with col_f2:
     log_content = lees_log()
