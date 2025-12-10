@@ -89,7 +89,7 @@ with header_col1:
 with header_col2:
     header_img = os.path.join(ASSETS_DIR, "socrates_header.jpeg")
     if os.path.exists(header_img):
-        st.image(header_img, width=200)
+        st.image(header_img, width=300)
 
 # =============================================================================
 # SESSION STATE
