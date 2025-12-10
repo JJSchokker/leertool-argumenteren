@@ -81,7 +81,7 @@ header_col1, header_col2 = st.columns([3, 1])
 with header_col1:
     st.title("Leertool Argumenteren")
     st.markdown(
-        '<div class="stelling-box"De stelling van vandaag: '
+        '<div class="stelling-box" 'De stelling van vandaag: '
         '<em>"Elektrische auto\'s zijn goed voor het milieu!"</em></div>',
         unsafe_allow_html=True
     )
