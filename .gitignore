@@ -1,0 +1,29 @@
+# API Keys - NOOIT committen!
+config.py
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Logs
+*.log
+model_responses_log.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
