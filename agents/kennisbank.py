@@ -11,9 +11,13 @@ KENNIS_PRO = [
     "De lucht in steden wordt schoner door elektrisch rijden (geen uitlaatgassen).",
     "Het stroomnet wordt steeds slimmer met bidirectioneel laden.",
     "De actieradius van nieuwe EV's is gemiddeld 400-500 km.",
-    "Thuisladen is goedkoper dan tanken, vooral met zonnepanelen.",
+    "Je kunt 's nachts opladen en vertrekt elke ochtend met een volle accu, zonder naar tankstations te hoeven. Met een eigen laadpaal en dalurenstroom is dat ook nog eens voordelig."    
+     "Thuisladen is goedkoper dan tanken, vooral met zonnepanelen.",
+    "Elektromotoren leveren direct koppel, wat zorgt voor vlotte acceleratie. Daarnaast zijn ze fluisterstil en trillingsvrij, wat het rijden aangenamer maakt."
+    "Elektriciteit is per kilometer goedkoper dan benzine of diesel, en elektrische auto's hebben minder bewegende onderdelen, dus minder slijtage aan remmen, geen olie verversen, en minder reparaties."
     "Europa wil vanaf 2035 alleen nog emissievrije auto's verkopen.",
 ]
+
 
 KENNIS_CONTRA = [
     "Batterijproductie kost veel energie en schaarse grondstoffen zoals lithium en kobalt.",
