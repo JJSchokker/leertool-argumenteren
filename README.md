@@ -1,14 +1,8 @@
-# 🚗⚡ Leertool Digitale Geletterdheid
+# Leertool Argumenteren
 
-Een educatieve tool voor basisschoolleerlingen (groep 7/8) om kritisch denken en mediawijsheid te oefenen via gesimuleerde online discussies over elektrische auto's.
+Een educatieve tool voor basisschoolleerlingen (bovenbouw groep 6/7/8) om kritisch denken en mediawijsheid te oefenen via gesimuleerde online discussies over elektrische auto's.
 
-## 🎯 Doel
 
-Leerlingen leren:
-- Betrouwbare bronnen herkennen
-- Misleidende informatie identificeren
-- Trollen en afleidingen doorzien
-- Een onderbouwde mening vormen
 
 ## 👥 Agenten
 
