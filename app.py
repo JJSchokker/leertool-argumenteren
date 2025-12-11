@@ -85,8 +85,8 @@ header_col1, header_col2 = st.columns([3, 1])
 with header_col1:
     st.title("Socrates Leertool Argumenteren")
     st.markdown(
-        '<div class="stelling-box">📢 De stelling: '
-        '<em>"Elektrische auto\'s zijn goed voor het milieu"</em></div>',
+        '<div class="stelling-box">De stelling van vandaag: '
+        '<em>"Elektrisch rijden is goed voor het milieu"</em></div>',
         unsafe_allow_html=True
     )
 
@@ -109,10 +109,11 @@ if "tijd_is_om" not in st.session_state:
     st.session_state.tijd_is_om = False
 if "aantekeningen" not in st.session_state:
     st.session_state.aantekeningen = ""
-   if "agent_volgorde" not in st.session_state:        
-    agent_namen = list(AGENTEN.keys())                
-    random.shuffle(agent_namen)                         
-    st.session_state.agent_volgorde = agent_namen    
+if "agent_volgorde" not in st.session_state:
+    agent_namen = list(AGENTEN.keys())
+    random.shuffle(agent_namen)
+    st.session_state.agent_volgorde = agent_namen
+
 # =============================================================================
 # LAYOUT
 # =============================================================================
@@ -161,27 +162,19 @@ with col1:
         else:
             rest = (TIJD_MINUTEN * 60) - verstreken
             st.caption(f" {int(rest//60)}:{int(rest%60):02d}")
-            
-            # Auto-refresh elke 30 seconden via JavaScript
-            st.markdown(
-                """
-                <script>
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 30000);
-                </script>
-                """,
-                unsafe_allow_html=True
-            )
     
     st.divider()
     
-agent_naam = st.selectbox(
-    "Kies wie je wilt spreken:",
-    st.session_state.agent_volgorde,  # ← WAS: list(AGENTEN.keys())
-    index=None,
-    placeholder="Selecteer...",
-    label_visibility="collapsed"    
+    # Agent selectie
+    st.subheader("👥 Gesprekspartner")
+    agent_naam = st.selectbox(
+        "Kies wie je wilt spreken:",
+        st.session_state.agent_volgorde,
+        index=None,
+        placeholder="Selecteer...",
+        label_visibility="collapsed"
+    )
+    
     if agent_naam:
         agent = AGENTEN[agent_naam]
         avatar_path = os.path.join(ASSETS_DIR, "avatars", agent.avatar_bestand)
@@ -325,7 +318,7 @@ st.divider()
 col_f1, col_f2 = st.columns([2, 1])
 
 with col_f1:
-    st.caption("Socrates Leertool Argumenteren| Model Vergelijking")
+    st.caption("Socrates Leertool Argumenteren | Model Vergelijking")
 
 with col_f2:
     log_content = lees_log()
@@ -338,3 +331,4 @@ with col_f2:
         )
     else:
         st.caption("Nog geen log beschikbaar")
+
