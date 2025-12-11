@@ -53,67 +53,12 @@ leertool_online/
         └── *.png
 ```
 
-## 🚀 Installatie
 
-### Lokaal
+## Gedragsparameters
 
-```bash
-# Clone repository
-git clone https://github.com/JOUW_USERNAME/leertool-digitale-geletterdheid.git
-cd leertool-digitale-geletterdheid
-
-# Installeer dependencies
-pip install -r requirements.txt
-
-# Configureer API keys
-cp config.py.example config.py
-# Vul je API keys in
-
-# Start de app
-streamlit run app.py
-```
-
-### Streamlit Cloud
-
-1. Fork deze repository
-2. Ga naar [share.streamlit.io](https://share.streamlit.io)
-3. Maak nieuwe app aan met je repo
-4. Voeg secrets toe in App Settings:
-
-```toml
-[api_keys.model_1]
-provider = "anthropic"
-api_key = "sk-ant-..."
-model_name = "claude-sonnet-4-20250514"
-
-[api_keys.model_2]
-provider = "openai"
-api_key = "sk-..."
-model_name = "gpt-4o"
-
-[api_keys.model_3]
-provider = "mistral"
-api_key = "..."
-model_name = "mistral-large-latest"
-
-[api_keys.model_4]
-provider = "google"
-api_key = "..."
-model_name = "gemini-2.0-flash"
-```
-
-## ⚙️ Gedragsparameters
-
-Elke agent heeft drie parameters (0-1):
+Elke agent heeft drie parameters (0-1) & max. aantal tokens:
 
 - **p_bronnen**: Kans dat agent feiten uit kennisbank gebruikt
 - **p_cv_detail**: Kans dat agent persoonlijke details deelt
 - **p_referentie**: Kans dat agent terugverwijst naar eerder gesprek
-
-## 📝 Licentie
-
-MIT License
-
-## 👤 Auteur
-
-Johan Schokker - Boom Uitgevers
+- **Max. aantal tokens: Maximale lengte van de respons in de chat
