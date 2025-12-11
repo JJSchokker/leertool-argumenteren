@@ -36,7 +36,6 @@ st.set_page_config(
     layout="wide"
 )
 
-
 # API keys en clients laden
 API_KEYS = laad_api_keys()
 clients = initialiseer_clients(API_KEYS)
@@ -85,10 +84,11 @@ header_col1, header_col2 = st.columns([3, 1])
 with header_col1:
     st.title("Socrates Leertool Argumenteren")
     st.markdown(
-        '<div class="stelling-box">De stelling van vandaag: '
-        '<em>"Elektrisch rijden is goed voor het milieu"</em></div>',
+        '<div class="stelling-box">📢 De stelling: '
+        '<em>"Elektrische auto\'s zijn goed voor het milieu"</em></div>',
         unsafe_allow_html=True
     )
+
 with header_col2:
     header_img = os.path.join(ASSETS_DIR, "socrates_header.jpeg")
     if os.path.exists(header_img):
@@ -153,10 +153,10 @@ with col1:
         
         if progressie >= 1.0:
             st.session_state.tijd_is_om = True
-            st.error("🏁 Tijd is om!")
+            st.error("Tijd is om!")
         else:
             rest = (TIJD_MINUTEN * 60) - verstreken
-            st.caption(f"⏰ {int(rest//60)}:{int(rest%60):02d}")
+            st.caption(f" {int(rest//60)}:{int(rest%60):02d}")
             
             # Auto-refresh elke 30 seconden via JavaScript
             st.markdown(
@@ -216,21 +216,21 @@ with col1:
     # Notities
     st.subheader("📝 Notities")
     st.session_state.aantekeningen = st.text_area(
-        "Schrijf hier je argumenten op:",
+        "Maak aantekeningen:",
         st.session_state.aantekeningen,
         height=120,
         label_visibility="collapsed"
     )
     if st.session_state.aantekeningen:
         st.download_button(
-            "💾 Download argumenten",
+            "💾 Download notities",
             st.session_state.aantekeningen,
             "notities.txt"
         )
 
 # --- RECHTER KOLOM: Chat ---
 with col2:
-    st.subheader("Chatdiscussie")
+    st.subheader("💬 Discussie")
     
     # Chat container
     chat_container = st.container(height=480)
@@ -248,8 +248,8 @@ with col2:
     elif st.session_state.start_tijd is None:
         st.info("👈 Klik op 'Start Discussie' om te beginnen")
     elif st.session_state.tijd_is_om:
-        st.warning("De tijd is voorbij!")
-        if st.button("Opnieuw beginnen"):
+        st.warning("⏰ De tijd is voorbij!")
+        if st.button("🔄 Opnieuw beginnen"):
             st.session_state.start_tijd = None
             st.session_state.messages = []
             st.session_state.tijd_is_om = False
@@ -294,7 +294,8 @@ with col2:
                         clients,
                         st.session_state.selected_model,
                         systeem_prompt,
-                        messages
+                        messages,
+                        max_tokens=agent.max_tokens
                     )
                 
                 # Loggen
@@ -324,7 +325,7 @@ st.divider()
 col_f1, col_f2 = st.columns([2, 1])
 
 with col_f1:
-    st.caption("Socrates Leertool Argumenteren | Model Vergelijking")
+    st.caption("Socrates Leertool Argumenteren| Model Vergelijking")
 
 with col_f2:
     log_content = lees_log()
