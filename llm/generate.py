@@ -43,7 +43,7 @@ def genereer_response(
             openai_msgs = [{"role": "system", "content": systeem_prompt}] + messages
             response = client_info["client"].chat.completions.create(
                 model=client_info["model_name"],
-                max_completion_tokens=300,
+                max_completion_tokens=350,
                 messages=openai_msgs
             )
             return response.choices[0].message.content
@@ -83,7 +83,7 @@ def vraag_uitleg(
         return "Selecteer eerst een model."
     
     client_info = clients[model_id]
-    systeem = "Je bent discussieleider voor groep 7/8. Leg kort uit (max 3 zinnen) wat de spreker bedoelt of probeert te doen."
+    systeem = "Je bent discussieleider voor groep 6/7/8 (bovenbouw). Leg kort uit (max 3 zinnen) wat de spreker bedoelt of probeer dat te doen in AVI-M7."
     vraag = f"Leg uit: '{tekst}'"
     
     try:
