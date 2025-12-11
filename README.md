@@ -1,10 +1,9 @@
 # Leertool Argumenteren
 
-Een educatieve tool voor basisschoolleerlingen (bovenbouw groep 6/7/8) om kritisch denken en mediawijsheid te oefenen via gesimuleerde online discussies over elektrische auto's.
+Een educatieve tool voor basisschoolleerlingen (bovenbouw) om kritisch denken en argumenteren te oefenen via gesimuleerde discussies in een chatroom.
 
 
-
-## 👥 Agenten
+## Agenten
 
 De tool bevat 10 verschillende discussiedeelnemers:
 
@@ -21,7 +20,7 @@ De tool bevat 10 verschillende discussiedeelnemers:
 | Jessica Stekelenburg | PRO afleider | Obsessief over yoga |
 | Jim Duister | CONTRA bondig | Extreem kort, conservatief |
 
-## 📁 Structuur
+## Structuur
 
 ```
 leertool_online/
