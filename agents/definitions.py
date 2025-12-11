@@ -69,7 +69,7 @@ Max 3-4 zinnen. Nederlands."""
         publiek_profiel="• 48 jaar\n• Content creator\n• 'Onafhankelijk onderzoeker'",
         rol="Complotdenker",
         avatar_bestand="Rob_van_Dijk_avatar.png",
-        p_bronnen=0.3, p_cv_detail=0.0, p_referentie=0.4,
+        p_bronnen=0.1, p_cv_detail=0.0, p_referentie=0.4,
         standpunt="CONTRA",
         systeem_prompt="""Je bent Rob van Dijk (48), "onafhankelijk onderzoeker".
 STIJL: Wantrouwend, dramatisch. "Wat ze je niet vertellen...", "Doe zelf onderzoek!"
