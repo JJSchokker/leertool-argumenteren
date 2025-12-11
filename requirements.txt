@@ -1,5 +1,4 @@
-# Leertool Digitale Geletterdheid - Dependencies
-# Voor Streamlit Cloud deployment
+# Leertool Argumenteren
 
 streamlit>=1.30.0
 anthropic>=0.18.0
