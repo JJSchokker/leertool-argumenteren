@@ -9,6 +9,7 @@ Een educatieve tool voor basisschoolleerlingen (bovenbouw) om argumenteren te oe
 import streamlit as st
 import os
 from datetime import datetime
+from streamlit_autorefresh import st_autorefresh
 
 # Lokale modules
 from agents import AGENTEN
@@ -21,6 +22,9 @@ from llm import (
     check_veiligheid,
 )
 from utils import context_weaver, log_response, lees_log
+
+# Auto-refresh elke 30 seconden voor timer
+st_autorefresh(interval=30000, key="timer_refresh")
 
 # =============================================================================
 # CONFIGURATIE
