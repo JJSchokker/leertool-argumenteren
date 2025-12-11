@@ -109,7 +109,10 @@ if "tijd_is_om" not in st.session_state:
     st.session_state.tijd_is_om = False
 if "aantekeningen" not in st.session_state:
     st.session_state.aantekeningen = ""
-
+   if "agent_volgorde" not in st.session_state:        
+    agent_namen = list(AGENTEN.keys())                
+    random.shuffle(agent_namen)                         
+    st.session_state.agent_volgorde = agent_namen    
 # =============================================================================
 # LAYOUT
 # =============================================================================
