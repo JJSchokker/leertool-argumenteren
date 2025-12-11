@@ -2,8 +2,7 @@
 Leertool Argumenteren
 ==============================
 
-Een educatieve tool voor basisschoolleerlingen (bovenbouw groep 6/7/8) om kritisch 
-denken en mediawijsheid te oefenen via gesimuleerde online discussies.
+Een educatieve tool voor basisschoolleerlingen (bovenbouw) om argumenteren te oefenen via gesimuleerde online discussies.
 
 """
 
@@ -28,10 +27,11 @@ from utils import context_weaver, log_response, lees_log
 # =============================================================================
 
 st.set_page_config(
-    page_title="Leertool Argumenteren",
+    page_title="Socrates Leertool Argumenteren",
     page_icon="",
     layout="wide"
 )
+
 
 # API keys en clients laden
 API_KEYS = laad_api_keys()
@@ -85,11 +85,10 @@ with header_col1:
         '<em>"Elektrisch rijden is goed voor het milieu"</em></div>',
         unsafe_allow_html=True
     )
-
 with header_col2:
     header_img = os.path.join(ASSETS_DIR, "socrates_header.jpeg")
     if os.path.exists(header_img):
-        st.image(header_img, width=450)
+        st.image(header_img, width=200)
 
 # =============================================================================
 # SESSION STATE
@@ -145,6 +144,7 @@ with col1:
     else:
         verstreken = (datetime.now() - st.session_state.start_tijd).total_seconds()
         progressie = min(verstreken / (TIJD_MINUTEN * 60), 1.0)
+        
         st.progress(progressie)
         
         if progressie >= 1.0:
@@ -153,6 +153,18 @@ with col1:
         else:
             rest = (TIJD_MINUTEN * 60) - verstreken
             st.caption(f"⏰ {int(rest//60)}:{int(rest%60):02d}")
+            
+            # Auto-refresh elke 30 seconden via JavaScript
+            st.markdown(
+                """
+                <script>
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 30000);
+                </script>
+                """,
+                unsafe_allow_html=True
+            )
     
     st.divider()
     
@@ -180,7 +192,7 @@ with col1:
     st.divider()
     
     # Hulp functie
-    with st.expander("Vraag om uitleg"):
+    with st.expander("Uitleg vragen"):
         uitleg_tekst = st.text_area(
             "Plak tekst om uitleg te krijgen:",
             height=60,
@@ -198,23 +210,23 @@ with col1:
     st.divider()
     
     # Notities
-    st.subheader("Schrijf hier je argumenten")
+    st.subheader("📝 Notities")
     st.session_state.aantekeningen = st.text_area(
-        "Maak aantekeningen:",
+        "Schrijf hier je argumenten op:",
         st.session_state.aantekeningen,
         height=120,
         label_visibility="collapsed"
     )
     if st.session_state.aantekeningen:
         st.download_button(
-            "Download",
+            "💾 Download argumenten",
             st.session_state.aantekeningen,
             "notities.txt"
         )
 
 # --- RECHTER KOLOM: Chat ---
 with col2:
-    st.subheader("Discussie")
+    st.subheader("Chatdiscussie")
     
     # Chat container
     chat_container = st.container(height=480)
@@ -232,8 +244,8 @@ with col2:
     elif st.session_state.start_tijd is None:
         st.info("👈 Klik op 'Start Discussie' om te beginnen")
     elif st.session_state.tijd_is_om:
-        st.warning("⏰ De tijd is voorbij!")
-        if st.button("🔄 Opnieuw beginnen"):
+        st.warning("De tijd is voorbij!")
+        if st.button("Opnieuw beginnen"):
             st.session_state.start_tijd = None
             st.session_state.messages = []
             st.session_state.tijd_is_om = False
@@ -308,7 +320,7 @@ st.divider()
 col_f1, col_f2 = st.columns([2, 1])
 
 with col_f1:
-    st.caption("Leertool Argumenteren | Model Vergelijking")
+    st.caption("Socrates Leertool Argumenteren | Model Vergelijking")
 
 with col_f2:
     log_content = lees_log()
