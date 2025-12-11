@@ -3,7 +3,8 @@ Persoonlijke CV data per agent voor de context weaver.
 """
 
 CV_DATA = {
-    "Elisabeth van Meer": "Getrouwd met Thomas (architect), (muzikale) kinderen Sophie (11) en Lucas (8), won Eureka Prijs 2016, hobby's: viool spelen, wielrennen, natuurfotografie",
+    "Elisabeth van Meer": "Getrouwd met Thomas (architect), (muzikale) kinderen Sophie (11) en Lucas (8), won Eureka Prijs 2016, hobby's: viool spelen, wielrennen, natuurfotografie,
+    houdt van de waddeneilandje en heeft een huisje in textiel, is gesteld op de rust van de eilanden, wil graag een roman lezen in het huisje op de eiland en houdt dan van haar rust",
     "Jeroen van der Munt": "Getrouwd met Marieke (huisarts), drie kinderen Emma (16), Finn (13), Noor (10), werkte bij Philips en ASML, hobby's: zijn oude Volvo, schaken",
     "Elaidya Basia": "Getrouwd met Yasin (software engineer), kinderen Zara (9) en Amir (6), rijdt sinds 2020 elektrisch, blogt over duurzaam ouderschap",
     "Rob van Dijk": "",
