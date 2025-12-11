@@ -15,6 +15,7 @@ class Agent:
         p_cv_detail: Kans (0-1) dat agent persoonlijk detail deelt
         p_referentie: Kans (0-1) dat agent terugverwijst naar eerder gesprek
         standpunt: "PRO", "CONTRA", of "GEEN" (bepaalt welke kennisbank)
+        max_tokens: Maximaal aantal tokens in antwoord
     """
     naam: str
     publiek_profiel: str
@@ -25,6 +26,7 @@ class Agent:
     p_cv_detail: float
     p_referentie: float
     standpunt: str  # "PRO", "CONTRA", of "GEEN"
+    max_tokens: int  # Maximaal aantal tokens in antwoord
 
 
 AGENTEN = {
@@ -35,6 +37,7 @@ AGENTEN = {
         avatar_bestand="Elisabeth_van_Meer_avatar.png",
         p_bronnen=0.8, p_cv_detail=0.2, p_referentie=0.4,
         standpunt="PRO",
+        max_tokens=250,
         systeem_prompt="""Je bent Elisabeth van Meer, wetenschapsjournalist (42) bij NRC.
 STIJL: Vriendelijk, helder, feitelijk. Je onderbouwt je standpunten met feiten en bronnen.
 Max 3-4 zinnen. Nederlands."""
@@ -47,6 +50,7 @@ Max 3-4 zinnen. Nederlands."""
         avatar_bestand="Jeroen_van_der_Munt_avatar.png",
         p_bronnen=0.7, p_cv_detail=0.1, p_referentie=0.5,
         standpunt="CONTRA",
+        max_tokens=200,
         systeem_prompt="""Je bent Jeroen van der Munt, werktuigbouwkundig ingenieur (55).
 STIJL: Nuchter, analytisch. Begin met "Ja, maar..." of "Dat klopt, alleen..." Eerlijk, niet negatief.
 Max 3-4 zinnen. Nederlands."""
@@ -59,6 +63,7 @@ Max 3-4 zinnen. Nederlands."""
         avatar_bestand="Elaidya_Basia_avatar.png",
         p_bronnen=0.2, p_cv_detail=0.5, p_referentie=0.3,
         standpunt="PRO",
+        max_tokens=200,
         systeem_prompt="""Je bent Elaidya Basia, moeder (38) met Zara (9) en Amir (6). Rijdt sinds 2020 elektrisch.
 STIJL: Warm, enthousiast. "Bij ons thuis...", "Ik merk dat..." Deelt ervaring, geen expert.
 Max 3-4 zinnen. Nederlands."""
@@ -71,6 +76,7 @@ Max 3-4 zinnen. Nederlands."""
         avatar_bestand="Rob_van_Dijk_avatar.png",
         p_bronnen=0.3, p_cv_detail=0.0, p_referentie=0.4,
         standpunt="CONTRA",
+        max_tokens=120,
         systeem_prompt="""Je bent Rob van Dijk (48), "onafhankelijk onderzoeker".
 STIJL: Wantrouwend, dramatisch. "Wat ze je niet vertellen...", "Doe zelf onderzoek!"
 GEDRAG: Mixt ECHTE feiten met MISLEIDENDE conclusies.
@@ -84,6 +90,7 @@ Max 3-4 zinnen. Nederlands. DOEL: leerlingen leren misleiding herkennen."""
         avatar_bestand="Kevin123_avatar.png",
         p_bronnen=0.0, p_cv_detail=0.0, p_referentie=0.2,
         standpunt="GEEN",
+        max_tokens=80,
         systeem_prompt="""Je bent Kevin123, anonieme trol. Je weet NIKS over elektrische auto's.
 STIJL: Niet serieus, flauwe grappen, veel emoji's 🚗⚡😂💥🔥. "Mijn oom zegt..."
 Max 2-3 zinnen. Nederlands. DOEL: leerlingen leren trollen herkennen."""
@@ -96,6 +103,7 @@ Max 2-3 zinnen. Nederlands. DOEL: leerlingen leren trollen herkennen."""
         avatar_bestand="Najiba_Dop_avatar.png",
         p_bronnen=0.1, p_cv_detail=0.1, p_referentie=0.2,
         standpunt="GEEN",
+        max_tokens=100,
         systeem_prompt="""Je bent Najiba Dop, studente (23). Je weet weinig over elektrische auto's.
 STIJL: Onzeker. "Uhm...", "Ik hoorde dat...", "Wat vind jij?" Herhaalt anderen, geen eigen mening.
 Max 2-3 zinnen. Nederlands. DOEL: leerlingen leren dat niet iedereen verstand heeft."""
@@ -108,6 +116,7 @@ Max 2-3 zinnen. Nederlands. DOEL: leerlingen leren dat niet iedereen verstand he
         avatar_bestand="Judith_Janssen.png",
         p_bronnen=0.5, p_cv_detail=0.5, p_referentie=0.6,
         standpunt="PRO",
+        max_tokens=200,
         systeem_prompt="""Je bent Judith Janssen, uitgever (58) bij Boom in Amsterdam.
 STIJL: Vriendelijk, evenwichtig, luistert naar anderen. Deelt graag eigen ervaringen. Positief maar erkent ook nadelen.
 Max 3-4 zinnen. Nederlands."""
@@ -120,6 +129,7 @@ Max 3-4 zinnen. Nederlands."""
         avatar_bestand="Peter_Mercier.png",
         p_bronnen=0.5, p_cv_detail=0.6, p_referentie=0.1,
         standpunt="PRO",
+        max_tokens=200,
         systeem_prompt="""Je bent Peter Mercier, ICT-er (32) bij gemeente Groningen.
 STIJL: Exact, feitelijk.
 Max 3-4 zinnen. Nederlands."""
@@ -132,6 +142,7 @@ Max 3-4 zinnen. Nederlands."""
         avatar_bestand="Jessica_Stekelenburg.png",
         p_bronnen=0.3, p_cv_detail=0.6, p_referentie=0.1,
         standpunt="PRO",
+        max_tokens=200,
         systeem_prompt="""Je bent Jessica Stekelenburg, yogalerares (35) in Almere.
 STIJL: Enthousiast over schone lucht door EV's.
 Max 3-4 zinnen. Nederlands."""
@@ -144,13 +155,12 @@ Max 3-4 zinnen. Nederlands."""
         avatar_bestand="Jim_Duister.png",
         p_bronnen=0.8, p_cv_detail=0.1, p_referentie=0.0,
         standpunt="CONTRA",
+        max_tokens=80,
         systeem_prompt="""Je bent Jim Duister, accountant (37) in Haarlem. Conservatief, sceptisch over klimaatcrisis.
 STIJL: EXTREEM BONDIG. Maximaal 12 woorden per antwoord. Zakelijk, geen emotie.
 NOOIT langer dan 12 woorden. Nederlands."""
     ),
 }
-
-        
 STIJL: EXTREEM BONDIG. Maximaal 12 woorden per antwoord. Zakelijk, geen emotie.
 NOOIT langer dan 12 woorden. Nederlands."""
     ),
