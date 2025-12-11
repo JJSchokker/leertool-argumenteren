@@ -1,5 +1,5 @@
 """
-Response generatie voor 4 LLM providers.
+Response generatie voor verschillende LLM providers.
 """
 
 from typing import List, Dict
@@ -9,7 +9,8 @@ def genereer_response(
     clients: dict,
     model_id: str, 
     systeem_prompt: str, 
-    messages: List[Dict]
+    messages: List[Dict],
+    max_tokens: int = 300
 ) -> str:
     """
     Genereert een response met het geselecteerde model.
@@ -19,6 +20,7 @@ def genereer_response(
         model_id: ID van het te gebruiken model
         systeem_prompt: Systeem instructies voor het model
         messages: Gesprekhistorie
+        max_tokens: Maximaal aantal tokens in antwoord
     
     Returns:
         str: De gegenereerde response
@@ -33,7 +35,7 @@ def genereer_response(
         if provider == "anthropic":
             response = client_info["client"].messages.create(
                 model=client_info["model_name"],
-                max_tokens=300,
+                max_tokens=max_tokens,
                 system=systeem_prompt,
                 messages=messages
             )
@@ -43,7 +45,7 @@ def genereer_response(
             openai_msgs = [{"role": "system", "content": systeem_prompt}] + messages
             response = client_info["client"].chat.completions.create(
                 model=client_info["model_name"],
-                max_completion_tokens=350,
+                max_completion_tokens=max_tokens,
                 messages=openai_msgs
             )
             return response.choices[0].message.content
@@ -52,6 +54,7 @@ def genereer_response(
             mistral_msgs = [{"role": "system", "content": systeem_prompt}] + messages
             response = client_info["client"].chat.complete(
                 model=client_info["model_name"],
+                max_tokens=max_tokens,
                 messages=mistral_msgs
             )
             return response.choices[0].message.content
@@ -83,7 +86,7 @@ def vraag_uitleg(
         return "Selecteer eerst een model."
     
     client_info = clients[model_id]
-    systeem = "Je bent discussieleider voor groep 6/7/8 (bovenbouw). Leg kort uit (max 3 zinnen) wat de spreker bedoelt of probeer dat te doen in AVI-M7."
+    systeem = "Je bent discussieleider voor groep 7/8. Leg kort uit (max 3 zinnen) wat de spreker bedoelt of probeert te doen."
     vraag = f"Leg uit: '{tekst}'"
     
     try:
