@@ -94,7 +94,3 @@ def context_weaver(agent: Agent, history: List[Dict]) -> str:
         instructies.append("\nVERWIJS IN JE ANTWOORD NAAR IETS DAT EERDER IS GEZEGD.")
     
     return "\n".join(instructies)
-    if len(user_msgs) >= 2 and random.random() < agent.p_referentie:
-        instructies.append("\n→ Verwijs kort naar iets dat eerder in het gesprek is gezegd.")
-    
-    return "\n".join(instructies)
