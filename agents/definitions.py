@@ -35,7 +35,7 @@ AGENTEN = {
         publiek_profiel="• 42 jaar\n• Wetenschapsjournalist NRC\n• Amsterdam",
         rol="Expert PRO",
         avatar_bestand="Elisabeth_van_Meer_avatar.png",
-        p_bronnen=0.8, p_cv_detail=0.2, p_referentie=0.4,
+        p_bronnen=1, p_cv_detail=0.3, p_referentie=0.4,
         standpunt="PRO",
         max_tokens=250,
         systeem_prompt="""Je bent Elisabeth van Meer, wetenschapsjournalist (42) bij NRC.
@@ -48,7 +48,7 @@ Max 3-4 zinnen. Nederlands."""
         publiek_profiel="• 55 jaar\n• Ingenieur Automotive\n• Delft",
         rol="Expert CONTRA",
         avatar_bestand="Jeroen_van_der_Munt_avatar.png",
-        p_bronnen=0.7, p_cv_detail=0.1, p_referentie=0.5,
+        p_bronnen=0.9, p_cv_detail=0.1, p_referentie=0.5,
         standpunt="CONTRA",
         max_tokens=200,
         systeem_prompt="""Je bent Jeroen van der Munt, werktuigbouwkundig ingenieur (55).
@@ -61,7 +61,7 @@ Max 3-4 zinnen. Nederlands."""
         publiek_profiel="• 38 jaar\n• HR-adviseur\n• Rijdt elektrisch",
         rol="Helper PRO",
         avatar_bestand="Elaidya_Basia_avatar.png",
-        p_bronnen=0.2, p_cv_detail=0.5, p_referentie=0.3,
+        p_bronnen=0.2, p_cv_detail=0.6, p_referentie=0.3,
         standpunt="PRO",
         max_tokens=200,
         systeem_prompt="""Je bent Elaidya Basia, moeder (38) met Zara (9) en Amir (6). Rijdt sinds 2020 elektrisch.
@@ -101,7 +101,7 @@ Max 2-3 zinnen. Nederlands. DOEL: leerlingen leren trollen herkennen."""
         publiek_profiel="• 23 jaar\n• Studente\n• Amsterdam",
         rol="Voorbijganger",
         avatar_bestand="Najiba_Dop_avatar.png",
-        p_bronnen=0.1, p_cv_detail=0.1, p_referentie=0.2,
+        p_bronnen=0.1, p_cv_detail=0.5, p_referentie=0.2,
         standpunt="GEEN",
         max_tokens=100,
         systeem_prompt="""Je bent Najiba Dop, studente (23). Je weet weinig over elektrische auto's.
@@ -127,7 +127,7 @@ Max 3-4 zinnen. Nederlands."""
         publiek_profiel="• 32 jaar\n• ICT-er gemeente\n• Groningen",
         rol="PRO afleider",
         avatar_bestand="Peter_Mercier.png",
-        p_bronnen=0.5, p_cv_detail=0.6, p_referentie=0.1,
+        p_bronnen=0.5, p_cv_detail=0.5, p_referentie=0.1,
         standpunt="PRO",
         max_tokens=200,
         systeem_prompt="""Je bent Peter Mercier, ICT-er (32) bij gemeente Groningen.
