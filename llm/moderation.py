@@ -1,6 +1,6 @@
 """
-Content moderatie (vangrail) voor het filteren van ongepaste input.
-Gebruikt snelle Claude Haiku voor snelle checks.
+Vangrail voor het filteren van ongepaste input.
+Gebruikt Claude Haiku voor snelle checks.
 """
 
 
