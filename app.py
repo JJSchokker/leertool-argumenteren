@@ -8,6 +8,7 @@ Een educatieve tool voor basisschoolleerlingen (bovenbouw) om argumenteren te oe
 
 import streamlit as st
 import os
+import random 
 from datetime import datetime
 from streamlit_autorefresh import st_autorefresh
 
