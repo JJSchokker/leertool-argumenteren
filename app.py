@@ -23,8 +23,8 @@ from llm import (
 )
 from utils import context_weaver, log_response, lees_log
 
-# Auto-refresh elke 30 seconden voor timer
-st_autorefresh(interval=30000, key="timer_refresh")
+# Auto-refresh elke 10 seconden voor timer
+st_autorefresh(interval=10000, key="timer_refresh")
 
 # =============================================================================
 # CONFIGURATIE
