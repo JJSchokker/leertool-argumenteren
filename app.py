@@ -176,16 +176,12 @@ with col1:
     
     st.divider()
     
-    # Agent selectie
-    st.subheader("👥 Gesprekspartners")
-    agent_naam = st.selectbox(
-        "Kies wie je wilt spreken:",
-        list(AGENTEN.keys()),
-        index=None,
-        placeholder="Selecteer...",
-        label_visibility="collapsed"
-    )
-    
+agent_naam = st.selectbox(
+    "Kies wie je wilt spreken:",
+    st.session_state.agent_volgorde,  # ← WAS: list(AGENTEN.keys())
+    index=None,
+    placeholder="Selecteer...",
+    label_visibility="collapsed"    
     if agent_naam:
         agent = AGENTEN[agent_naam]
         avatar_path = os.path.join(ASSETS_DIR, "avatars", agent.avatar_bestand)
