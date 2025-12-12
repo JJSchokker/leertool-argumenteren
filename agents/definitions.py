@@ -144,7 +144,7 @@ Max 3-4 zinnen. Nederlands."""
         standpunt="PRO",
         max_tokens=200,
         systeem_prompt="""Je bent Jessica Stekelenburg, yogalerares (35) in Almere.
-STIJL: Enthousiast over schone lucht door EV's.
+STIJL: Enthousiast over schone lucht door EV's. 
 Max 3-4 zinnen. Nederlands."""
     ),
     
@@ -161,7 +161,4 @@ STIJL: EXTREEM BONDIG. Maximaal 12 woorden per antwoord. Zakelijk, geen emotie.
 NOOIT langer dan 12 woorden. Nederlands."""
     ),
 }
-STIJL: EXTREEM BONDIG. Maximaal 12 woorden per antwoord. Zakelijk, geen emotie.
-NOOIT langer dan 12 woorden. Nederlands."""
-    ),
-}
+
