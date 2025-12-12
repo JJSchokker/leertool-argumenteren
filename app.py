@@ -1,4 +1,3 @@
-
 """
 Leertool Argumenteren
 ==============================
@@ -12,7 +11,6 @@ import streamlit as st
 import os
 import random 
 from datetime import datetime
-from streamlit_autorefresh import st_autorefresh
 
 # Lokale modules
 from agents import AGENTEN
@@ -26,16 +24,13 @@ from llm import (
 )
 from utils import context_weaver, log_response, lees_log
 
-# Auto-refresh elke 10 seconden voor timer
-st_autorefresh(interval=10000, key="timer_refresh")
-
 # =============================================================================
 # CONFIGURATIE
 # =============================================================================
 
 st.set_page_config(
     page_title="Socrates Leertool Argumenteren",
-    page_icon="",
+    page_icon="🏛️",
     layout="wide"
 )
 
@@ -95,7 +90,7 @@ with header_col1:
 with header_col2:
     header_img = os.path.join(ASSETS_DIR, "socrates_header.jpeg")
     if os.path.exists(header_img):
-        st.image(header_img, width=450)
+        st.image(header_img, width=200)
 
 # =============================================================================
 # SESSION STATE
@@ -105,10 +100,6 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 if "selected_model" not in st.session_state:
     st.session_state.selected_model = "model_1"
-if "start_tijd" not in st.session_state:
-    st.session_state.start_tijd = None
-if "tijd_is_om" not in st.session_state:
-    st.session_state.tijd_is_om = False
 if "aantekeningen" not in st.session_state:
     st.session_state.aantekeningen = ""
 if "agent_volgorde" not in st.session_state:
@@ -125,33 +116,8 @@ col1, col2 = st.columns([1, 2])
 # --- LINKER KOLOM: Controls ---
 with col1:
     
-    # Timer
-    st.subheader("Tijd")
-    TIJD_MINUTEN = 12
-    
-    if st.session_state.start_tijd is None:
-        if st.button("Start Discussie", type="primary", use_container_width=True):
-            st.session_state.start_tijd = datetime.now()
-            st.session_state.messages = []
-            st.session_state.tijd_is_om = False
-            st.rerun()
-    else:
-        verstreken = (datetime.now() - st.session_state.start_tijd).total_seconds()
-        progressie = min(verstreken / (TIJD_MINUTEN * 60), 1.0)
-        
-        st.progress(progressie)
-        
-        if progressie >= 1.0:
-            st.session_state.tijd_is_om = True
-            st.error("Tijd is om!")
-        else:
-            rest = (TIJD_MINUTEN * 60) - verstreken
-            st.caption(f"⏰ {int(rest//60)}:{int(rest%60):02d}")
-    
-    st.divider()
-    
     # Agent selectie
-    st.subheader("👥 Gesprekspartners")
+    st.subheader("👥 Gesprekspartner")
     agent_naam = st.selectbox(
         "Kies wie je wilt spreken:",
         st.session_state.agent_volgorde,
@@ -192,7 +158,7 @@ with col1:
     st.divider()
     
     # Notities
-    st.subheader("Schrijf hier je argumenten")
+    st.subheader("📝 Notities")
     st.session_state.aantekeningen = st.text_area(
         "Maak aantekeningen:",
         st.session_state.aantekeningen,
@@ -201,14 +167,24 @@ with col1:
     )
     if st.session_state.aantekeningen:
         st.download_button(
-            "💾 Download argumenten",
+            "💾 Download notities",
             st.session_state.aantekeningen,
             "notities.txt"
         )
+    
+    st.divider()
+    
+    # Nieuw gesprek knop
+    if st.button("🔄 Nieuw gesprek", use_container_width=True):
+        st.session_state.messages = []
+        agent_namen = list(AGENTEN.keys())
+        random.shuffle(agent_namen)
+        st.session_state.agent_volgorde = agent_namen
+        st.rerun()
 
 # --- RECHTER KOLOM: Chat ---
 with col2:
-    st.subheader("Discussie in de chat")
+    st.subheader("💬 Discussie")
     
     # Chat container
     chat_container = st.container(height=480)
@@ -220,24 +196,10 @@ with col2:
                 else:
                     st.write(msg["content"])
     
-    # Status checks en chat input
-    if st.session_state.start_tijd is None:
-        st.info("👈 Klik op 'Start Discussie' om te beginnen")
-    elif st.session_state.tijd_is_om:
-        st.warning("⏰ De tijd is voorbij!")
-        if st.button("🔄 Opnieuw beginnen"):
-            st.session_state.start_tijd = None
-            st.session_state.messages = []
-            st.session_state.tijd_is_om = False
-            # Nieuwe agent volgorde
-            agent_namen = list(AGENTEN.keys())
-            random.shuffle(agent_namen)
-            st.session_state.agent_volgorde = agent_namen
-            st.rerun()
-    elif not agent_naam:
-        st.info("👆 Kies een gesprekspartner")
+    # Chat input
+    if not agent_naam:
+        st.info("👆 Kies eerst een gesprekspartner")
     else:
-        # Chat input
         if prompt := st.chat_input(f"Zeg iets tegen {agent_naam}..."):
             # User bericht toevoegen
             st.session_state.messages.append({
