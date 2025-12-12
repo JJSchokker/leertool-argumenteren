@@ -30,7 +30,7 @@ from utils import context_weaver, log_response, lees_log
 
 st.set_page_config(
     page_title="Socrates Leertool Argumenteren",
-    page_icon="🏛️",
+    page_icon="",
     layout="wide"
 )
 
@@ -90,7 +90,7 @@ with header_col1:
 with header_col2:
     header_img = os.path.join(ASSETS_DIR, "socrates_header.jpeg")
     if os.path.exists(header_img):
-        st.image(header_img, width=200)
+        st.image(header_img, width=450)
 
 # =============================================================================
 # SESSION STATE
@@ -158,7 +158,7 @@ with col1:
     st.divider()
     
     # Notities
-    st.subheader("📝 Notities")
+    st.subheader("Schrijf hier je argumenten")
     st.session_state.aantekeningen = st.text_area(
         "Maak aantekeningen:",
         st.session_state.aantekeningen,
@@ -167,7 +167,7 @@ with col1:
     )
     if st.session_state.aantekeningen:
         st.download_button(
-            "💾 Download notities",
+            "💾 Download argumenten",
             st.session_state.aantekeningen,
             "notities.txt"
         )
@@ -184,7 +184,7 @@ with col1:
 
 # --- RECHTER KOLOM: Chat ---
 with col2:
-    st.subheader("💬 Discussie")
+    st.subheader("Discussie in de chat")
     
     # Chat container
     chat_container = st.container(height=480)
