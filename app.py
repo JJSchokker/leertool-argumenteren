@@ -2,8 +2,7 @@
 Leertool Argumenteren
 ==============================
 
-Een educatieve tool voor basisschoolleerlingen (bovenbouw) om argumenteren 
-te oefenen via gesimuleerde online discussies.
+Een tool voor basisschoolleerlingen (bovenbouw) om argumenteren te oefenen via gesimuleerde chat-discussies.
 
 """
 
@@ -117,7 +116,7 @@ col1, col2 = st.columns([1, 2])
 with col1:
     
     # Agent selectie
-    st.subheader("👥 Gesprekspartner")
+    st.subheader("👥 Gesprekspartners")
     agent_naam = st.selectbox(
         "Kies wie je wilt spreken:",
         st.session_state.agent_volgorde,
@@ -167,7 +166,7 @@ with col1:
     )
     if st.session_state.aantekeningen:
         st.download_button(
-            "💾 Download argumenten",
+            "Download argumenten",
             st.session_state.aantekeningen,
             "notities.txt"
         )
@@ -175,7 +174,7 @@ with col1:
     st.divider()
     
     # Nieuw gesprek knop
-    if st.button("🔄 Nieuw gesprek", use_container_width=True):
+    if st.button("🔄 Nieuwe chat", use_container_width=True):
         st.session_state.messages = []
         agent_namen = list(AGENTEN.keys())
         random.shuffle(agent_namen)
@@ -273,7 +272,7 @@ with col_f2:
     log_content = lees_log()
     if log_content:
         st.download_button(
-            "📥 Download Log",
+            "Download Log",
             log_content,
             "model_responses_log.json",
             "application/json"
