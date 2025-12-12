@@ -1,3 +1,4 @@
+
 """
 Leertool Argumenteren
 ==============================
@@ -34,7 +35,7 @@ st_autorefresh(interval=10000, key="timer_refresh")
 
 st.set_page_config(
     page_title="Socrates Leertool Argumenteren",
-    page_icon="",
+    page_icon="🏛️",
     layout="wide"
 )
 
@@ -94,7 +95,7 @@ with header_col1:
 with header_col2:
     header_img = os.path.join(ASSETS_DIR, "socrates_header.jpeg")
     if os.path.exists(header_img):
-        st.image(header_img, width=400)
+        st.image(header_img, width=200)
 
 # =============================================================================
 # SESSION STATE
@@ -102,15 +103,8 @@ with header_col2:
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
-#if "selected_model" not in st.session_state:
-    # Random model kiezen bij start sessie (onzichtbaar voor gebruiker)
-    # beschikbare_modellen = list(clients.keys())
-    # if beschikbare_modellen:
-    #    st.session_state.selected_model = random.choice(beschikbare_modellen)
 if "selected_model" not in st.session_state:
-    st.session_state.selected_model = "model_3"  # Vast op Claude zetten    
- #   else:
- #       st.session_state.selected_model = None
+    st.session_state.selected_model = "model_1"
 if "start_tijd" not in st.session_state:
     st.session_state.start_tijd = None
 if "tijd_is_om" not in st.session_state:
@@ -132,11 +126,11 @@ col1, col2 = st.columns([1, 2])
 with col1:
     
     # Timer
-    st.subheader("Tijd")
-    TIJD_MINUTEN = 10
+    st.subheader("⏱️ Tijd")
+    TIJD_MINUTEN = 15
     
     if st.session_state.start_tijd is None:
-        if st.button("Start Discussie", type="primary", use_container_width=True):
+        if st.button("🚀 Start Discussie", type="primary", use_container_width=True):
             st.session_state.start_tijd = datetime.now()
             st.session_state.messages = []
             st.session_state.tijd_is_om = False
@@ -149,7 +143,7 @@ with col1:
         
         if progressie >= 1.0:
             st.session_state.tijd_is_om = True
-            st.error("Tijd is om!")
+            st.error("🏁 Tijd is om!")
         else:
             rest = (TIJD_MINUTEN * 60) - verstreken
             st.caption(f"⏰ {int(rest//60)}:{int(rest%60):02d}")
@@ -157,7 +151,7 @@ with col1:
     st.divider()
     
     # Agent selectie
-    st.subheader("👥 Gesprekspartners")
+    st.subheader("👥 Gesprekspartner")
     agent_naam = st.selectbox(
         "Kies wie je wilt spreken:",
         st.session_state.agent_volgorde,
@@ -180,7 +174,7 @@ with col1:
     st.divider()
     
     # Hulp functie
-    with st.expander("Uitleg vragen"):
+    with st.expander("ℹ️ Uitleg vragen"):
         uitleg_tekst = st.text_area(
             "Plak tekst om uitleg te krijgen:",
             height=60,
@@ -198,7 +192,7 @@ with col1:
     st.divider()
     
     # Notities
-    st.subheader("Schrijf hier je argumenten")
+    st.subheader("📝 Notities")
     st.session_state.aantekeningen = st.text_area(
         "Maak aantekeningen:",
         st.session_state.aantekeningen,
@@ -207,7 +201,7 @@ with col1:
     )
     if st.session_state.aantekeningen:
         st.download_button(
-            "💾 Download argumenten",
+            "💾 Download notities",
             st.session_state.aantekeningen,
             "notities.txt"
         )
@@ -227,20 +221,14 @@ with col2:
                     st.write(msg["content"])
     
     # Status checks en chat input
-    if not st.session_state.selected_model:
-        st.error("⚠️ Geen model beschikbaar. Controleer de configuratie.")
-    elif st.session_state.start_tijd is None:
+    if st.session_state.start_tijd is None:
         st.info("👈 Klik op 'Start Discussie' om te beginnen")
     elif st.session_state.tijd_is_om:
-        st.warning("De tijd is voorbij!")
+        st.warning("⏰ De tijd is voorbij!")
         if st.button("🔄 Opnieuw beginnen"):
             st.session_state.start_tijd = None
             st.session_state.messages = []
             st.session_state.tijd_is_om = False
-            # Nieuw random model bij opnieuw beginnen
-            beschikbare_modellen = list(clients.keys())
-            if beschikbare_modellen:
-                st.session_state.selected_model = random.choice(beschikbare_modellen)
             # Nieuwe agent volgorde
             agent_namen = list(AGENTEN.keys())
             random.shuffle(agent_namen)
@@ -289,7 +277,8 @@ with col2:
                         messages,
                         max_tokens=agent.max_tokens
                     )
-                st.write(f"DEBUG: Model = {st.session_state.selected_model}")                
+                
+                # Loggen
                 log_response(
                     API_KEYS,
                     st.session_state.selected_model,
