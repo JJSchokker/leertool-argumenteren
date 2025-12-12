@@ -2,7 +2,8 @@
 Leertool Argumenteren
 ==============================
 
-Een educatieve tool voor basisschoolleerlingen (bovenbouw) om argumenteren te oefenen via gesimuleerde online discussies.
+Een educatieve tool voor basisschoolleerlingen (bovenbouw) om argumenteren 
+te oefenen via gesimuleerde online discussies.
 
 """
 
@@ -33,7 +34,7 @@ st_autorefresh(interval=10000, key="timer_refresh")
 
 st.set_page_config(
     page_title="Socrates Leertool Argumenteren",
-    page_icon="",
+    page_icon="🏛️",
     layout="wide"
 )
 
@@ -102,7 +103,12 @@ with header_col2:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "selected_model" not in st.session_state:
-    st.session_state.selected_model = None
+    # Random model kiezen bij start sessie (onzichtbaar voor gebruiker)
+    beschikbare_modellen = list(clients.keys())
+    if beschikbare_modellen:
+        st.session_state.selected_model = random.choice(beschikbare_modellen)
+    else:
+        st.session_state.selected_model = None
 if "start_tijd" not in st.session_state:
     st.session_state.start_tijd = None
 if "tijd_is_om" not in st.session_state:
@@ -123,29 +129,12 @@ col1, col2 = st.columns([1, 2])
 # --- LINKER KOLOM: Controls ---
 with col1:
     
-    # Model selectie
-    st.subheader("Kies Model")
-    model_cols = st.columns(4)
-    for i, col in enumerate(model_cols):
-        model_id = f"model_{i+1}"
-        with col:
-            btn_type = "primary" if st.session_state.selected_model == model_id else "secondary"
-            if st.button(f"M{i+1}", use_container_width=True, type=btn_type):
-                st.session_state.selected_model = model_id
-                st.session_state.messages = []
-                st.rerun()
-    
-    if st.session_state.selected_model:
-        st.success(f"✓ {st.session_state.selected_model.replace('_', ' ').title()}")
-    
-    st.divider()
-    
     # Timer
-    st.subheader("Tijd")
+    st.subheader("⏱️ Tijd")
     TIJD_MINUTEN = 15
     
     if st.session_state.start_tijd is None:
-        if st.button("Start Discussie", type="primary", use_container_width=True):
+        if st.button("🚀 Start Discussie", type="primary", use_container_width=True):
             st.session_state.start_tijd = datetime.now()
             st.session_state.messages = []
             st.session_state.tijd_is_om = False
@@ -158,10 +147,10 @@ with col1:
         
         if progressie >= 1.0:
             st.session_state.tijd_is_om = True
-            st.error("Tijd is om!")
+            st.error("🏁 Tijd is om!")
         else:
             rest = (TIJD_MINUTEN * 60) - verstreken
-            st.caption(f" {int(rest//60)}:{int(rest%60):02d}")
+            st.caption(f"⏰ {int(rest//60)}:{int(rest%60):02d}")
     
     st.divider()
     
@@ -189,7 +178,7 @@ with col1:
     st.divider()
     
     # Hulp functie
-    with st.expander("Uitleg vragen"):
+    with st.expander("ℹ️ Uitleg vragen"):
         uitleg_tekst = st.text_area(
             "Plak tekst om uitleg te krijgen:",
             height=60,
@@ -237,7 +226,7 @@ with col2:
     
     # Status checks en chat input
     if not st.session_state.selected_model:
-        st.warning("👈 Selecteer eerst een model")
+        st.error("⚠️ Geen model beschikbaar. Controleer de configuratie.")
     elif st.session_state.start_tijd is None:
         st.info("👈 Klik op 'Start Discussie' om te beginnen")
     elif st.session_state.tijd_is_om:
@@ -246,6 +235,14 @@ with col2:
             st.session_state.start_tijd = None
             st.session_state.messages = []
             st.session_state.tijd_is_om = False
+            # Nieuw random model bij opnieuw beginnen
+            beschikbare_modellen = list(clients.keys())
+            if beschikbare_modellen:
+                st.session_state.selected_model = random.choice(beschikbare_modellen)
+            # Nieuwe agent volgorde
+            agent_namen = list(AGENTEN.keys())
+            random.shuffle(agent_namen)
+            st.session_state.agent_volgorde = agent_namen
             st.rerun()
     elif not agent_naam:
         st.info("👆 Kies een gesprekspartner")
@@ -318,7 +315,7 @@ st.divider()
 col_f1, col_f2 = st.columns([2, 1])
 
 with col_f1:
-    st.caption("Socrates Leertool Argumenteren | Model Vergelijking")
+    st.caption("Socrates Leertool Argumenteren")
 
 with col_f2:
     log_content = lees_log()
@@ -331,4 +328,3 @@ with col_f2:
         )
     else:
         st.caption("Nog geen log beschikbaar")
-
