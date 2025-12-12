@@ -287,8 +287,7 @@ with col2:
                         messages,
                         max_tokens=agent.max_tokens
                     )
-                 st.write(f"DEBUG: Model = {st.session_state.selected_model}")
-                
+                st.write(f"DEBUG: Model = {st.session_state.selected_model}")                
                 log_response(
                     API_KEYS,
                     st.session_state.selected_model,
