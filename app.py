@@ -104,9 +104,11 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 if "selected_model" not in st.session_state:
     # Random model kiezen bij start sessie (onzichtbaar voor gebruiker)
-    beschikbare_modellen = list(clients.keys())
-    if beschikbare_modellen:
-        st.session_state.selected_model = random.choice(beschikbare_modellen)
+    # beschikbare_modellen = list(clients.keys())
+    # if beschikbare_modellen:
+    #    st.session_state.selected_model = random.choice(beschikbare_modellen)
+if "selected_model" not in st.session_state:
+    st.session_state.selected_model = "model_3"  # Vast op Claude zetten    
     else:
         st.session_state.selected_model = None
 if "start_tijd" not in st.session_state:
