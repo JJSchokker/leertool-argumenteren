@@ -1,0 +1,13 @@
+---
+bron: Technisch Weekblad
+auteur: Dr. Jan de Vries
+datum: 2024-02-10
+url: https://www.technischweekblad.nl/batterij-productie
+type: artikel
+---
+
+De productie van batterijen voor elektrische auto's brengt aanzienlijke milieu-uitdagingen met zich mee. De winning van lithium en kobalt, essentiële grondstoffen voor de batterijen, vindt vaak plaats onder problematische omstandigheden.
+
+In de Democratische Republiek Congo, waar meer dan 60 procent van het kobalt vandaan komt, zijn er berichten over kinderarbeid in de mijnen. Hoewel grote fabrikanten beloven hun toeleveringsketens te controleren, blijft dit een zorgpunt.
+
+Daarnaast kost de productie van één batterij voor een elektrische auto ongeveer 17.500 kWh aan energie. In landen waar deze productie plaatsvindt, zoals China, komt een groot deel van de elektriciteit nog uit kolencentrales.

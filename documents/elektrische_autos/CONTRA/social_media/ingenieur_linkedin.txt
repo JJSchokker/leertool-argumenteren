@@ -1,0 +1,15 @@
+---
+bron: LinkedIn
+auteur: Pieter Bakker, Elektrotechnisch Ingenieur
+datum: 2024-04-05
+url: https://linkedin.com/posts/pieterbakker/123456
+type: social_media
+---
+
+Als elektrotechnisch ingenieur maak ik me zorgen over ons stroomnet. Als straks iedereen 's avonds thuiskomt en de auto aan de lader hangt, krijgen we problemen.
+
+Het huidige net is hier simpelweg niet op gebouwd. In sommige wijken zien we nu al dat de spanning te laag wordt op piekmomenten.
+
+De oplossing? Slim laden en flinke investeringen in het net. Maar dat kost tijd en miljarden euro's.
+
+#Energietransitie #Stroomnet #EV

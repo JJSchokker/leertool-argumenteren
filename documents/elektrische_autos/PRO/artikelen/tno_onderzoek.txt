@@ -1,0 +1,13 @@
+---
+bron: TNO
+auteur: TNO Onderzoek
+datum: 2024-01-15
+url: https://www.tno.nl/ev-onderzoek
+type: artikel
+---
+
+Uit uitgebreid onderzoek van TNO blijkt dat elektrische auto's over hun gehele levensduur 60 tot 70 procent minder CO2 uitstoten dan vergelijkbare benzine- of dieselauto's. Dit geldt zelfs wanneer de productie van de batterij wordt meegerekend.
+
+Het omslagpunt, waarbij de hogere CO2-uitstoot van de batterijproductie is goedgemaakt, ligt gemiddeld rond de 39.000 kilometer. Daarna wordt elk gereden kilometer schoner dan bij een fossiele auto.
+
+De onderzoekers benadrukken dat dit voordeel verder toeneemt naarmate het elektriciteitsnet groener wordt. In Nederland komt inmiddels meer dan 40 procent van de stroom uit hernieuwbare bronnen zoals wind en zon.
