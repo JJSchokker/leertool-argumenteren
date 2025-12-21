@@ -1,8 +1,14 @@
-# Leertool Argumenteren
+# Leertool Argumenteren - Dependencies
 
+# UI
 streamlit>=1.30.0
-streamlit-autorefresh
+
+# LLM Providers
 anthropic>=0.18.0
 openai>=1.0.0
 mistralai>=0.0.7
 google-generativeai>=0.3.0
+
+# RAG
+chromadb>=0.4.0
+sentence-transformers>=2.2.0

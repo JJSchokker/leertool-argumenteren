@@ -1,27 +1,28 @@
 """
-Leertool Argumenteren
-==============================
+Leertool Argumenteren - Streamlit App
+=====================================
 
-Een tool voor basisschoolleerlingen (bovenbouw) om argumenteren te oefenen via gesimuleerde chat-discussies.
-
+Entry point voor Streamlit Cloud deployment.
 """
 
 import streamlit as st
 import os
-import random 
-from datetime import datetime
+import sys
 
-# Lokale modules
-from agents import AGENTEN
-from llm import (
+# Core modules importeren
+from core import (
+    LeertoolEngine,
+    get_actieve_stelling,
+    AGENTEN,
     laad_api_keys,
     initialiseer_clients,
     maak_vangrail_client,
-    genereer_response,
-    vraag_uitleg,
     check_veiligheid,
+    log_response,
+    lees_log,
+    format_bron_resultaat,
+    NIVEAU_LABELS,
 )
-from utils import context_weaver, log_response, lees_log
 
 # =============================================================================
 # CONFIGURATIE
@@ -29,18 +30,33 @@ from utils import context_weaver, log_response, lees_log
 
 st.set_page_config(
     page_title="Socrates Leertool Argumenteren",
-    page_icon="",
+    page_icon="🏛️",
     layout="wide"
 )
 
-# API keys en clients laden
+# Paden
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+ASSETS_DIR = os.path.join(SCRIPT_DIR, "assets")
+DOCUMENTS_DIR = os.path.join(SCRIPT_DIR, "documents")
+
+# API en clients
 API_KEYS = laad_api_keys()
 clients = initialiseer_clients(API_KEYS)
 vangrail_client = maak_vangrail_client(API_KEYS)
 
-# Pad naar assets
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-ASSETS_DIR = os.path.join(SCRIPT_DIR, "assets")
+# Engine initialiseren (cached)
+@st.cache_resource
+def get_engine():
+    return LeertoolEngine(DOCUMENTS_DIR, clients)
+
+try:
+    engine = get_engine()
+    ENGINE_OK = True
+except Exception as e:
+    ENGINE_OK = False
+    st.error(f"Engine kon niet starten: {e}")
+
+stelling = get_actieve_stelling()
 
 # =============================================================================
 # STYLING
@@ -57,11 +73,29 @@ st.markdown("""
         margin-bottom: 20px; 
     }
     .discussieleider-box { 
+        background-color: #fff3e0; 
+        border-left: 5px solid #ff9800; 
+        padding: 15px; 
+        border-radius: 5px; 
+    }
+    .waarschuwing-box { 
         background-color: #ffebee; 
         border-left: 5px solid #d32f2f; 
         padding: 15px; 
         border-radius: 5px; 
         color: #b71c1c; 
+    }
+    .bron-box {
+        background-color: #e8f5e9;
+        border-left: 5px solid #4caf50;
+        padding: 15px;
+        border-radius: 5px;
+    }
+    .fakenews-box {
+        background-color: #fce4ec;
+        border-left: 5px solid #e91e63;
+        padding: 15px;
+        border-radius: 5px;
     }
     .agent-profiel { 
         background-color: #f5f5f5; 
@@ -81,15 +115,15 @@ header_col1, header_col2 = st.columns([3, 1])
 with header_col1:
     st.title("Socrates Leertool Argumenteren")
     st.markdown(
-        '<div class="stelling-box">De stelling van vandaag: '
-        '<em>"Elektrisch rijden is goed voor het milieu"</em></div>',
+        f'<div class="stelling-box">De stelling van vandaag: '
+        f'<em>"{stelling.titel}"</em></div>',
         unsafe_allow_html=True
     )
 
 with header_col2:
     header_img = os.path.join(ASSETS_DIR, "socrates_header.jpeg")
     if os.path.exists(header_img):
-        st.image(header_img, width=450)
+        st.image(header_img, width=200)
 
 # =============================================================================
 # SESSION STATE
@@ -98,13 +132,13 @@ with header_col2:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "selected_model" not in st.session_state:
-    st.session_state.selected_model = "model_1"
+    st.session_state.selected_model = engine.get_random_model() if ENGINE_OK else None
+if "agent_volgorde" not in st.session_state:
+    st.session_state.agent_volgorde = engine.get_agenten_geshuffeld() if ENGINE_OK else list(AGENTEN.keys())
+if "discussie_actief" not in st.session_state:
+    st.session_state.discussie_actief = False
 if "aantekeningen" not in st.session_state:
     st.session_state.aantekeningen = ""
-if "agent_volgorde" not in st.session_state:
-    agent_namen = list(AGENTEN.keys())
-    random.shuffle(agent_namen)
-    st.session_state.agent_volgorde = agent_namen
 
 # =============================================================================
 # LAYOUT
@@ -112,11 +146,29 @@ if "agent_volgorde" not in st.session_state:
 
 col1, col2 = st.columns([1, 2])
 
-# --- LINKER KOLOM: Controls ---
+# --- LINKER KOLOM ---
 with col1:
     
+    # Start knop
+    if not st.session_state.discussie_actief:
+        if st.button("🚀 Start Discussie", type="primary", use_container_width=True):
+            st.session_state.discussie_actief = True
+            st.session_state.messages = []
+            st.rerun()
+    else:
+        st.success("✅ Discussie actief")
+        if st.button("🔄 Opnieuw beginnen"):
+            st.session_state.discussie_actief = False
+            st.session_state.messages = []
+            if ENGINE_OK:
+                st.session_state.selected_model = engine.get_random_model()
+                st.session_state.agent_volgorde = engine.get_agenten_geshuffeld()
+            st.rerun()
+    
+    st.divider()
+    
     # Agent selectie
-    st.subheader("👥 Gesprekspartners")
+    st.subheader("👥 Gesprekspartner")
     agent_naam = st.selectbox(
         "Kies wie je wilt spreken:",
         st.session_state.agent_volgorde,
@@ -138,52 +190,85 @@ with col1:
     
     st.divider()
     
-    # Hulp functie
-    with st.expander("ℹ️ Uitleg vragen"):
-        uitleg_tekst = st.text_area(
-            "Plak tekst om uitleg te krijgen:",
-            height=60,
-            key="uitleg",
-            label_visibility="collapsed"
-        )
-        if st.button("Leg uit"):
-            if uitleg_tekst and st.session_state.selected_model:
-                uitleg = vraag_uitleg(clients, st.session_state.selected_model, uitleg_tekst)
-                st.markdown(
-                    f"<div class='discussieleider-box'>👩‍🏫 {uitleg}</div>",
-                    unsafe_allow_html=True
-                )
+    # Discussiemeester
+    st.subheader("👩‍🏫 Discussiemeester")
+    
+    dm_tekst = st.text_area(
+        "Plak tekst uit de chat:",
+        height=80,
+        placeholder="Kopieer en plak hier tekst...",
+        label_visibility="collapsed",
+        key="dm_tekst"
+    )
+    
+    dm_niveau = st.radio(
+        "Niveau:",
+        options=["groep_6", "groep_7", "groep_8"],
+        format_func=lambda x: NIVEAU_LABELS[x],
+        horizontal=True,
+        label_visibility="collapsed"
+    )
+    
+    dm_col1, dm_col2 = st.columns(2)
+    
+    with dm_col1:
+        if st.button("📖 Uitleg", use_container_width=True):
+            if dm_tekst and st.session_state.selected_model and ENGINE_OK:
+                with st.spinner("Uitleg maken..."):
+                    uitleg = engine.genereer_uitleg(
+                        dm_tekst, 
+                        dm_niveau, 
+                        st.session_state.selected_model
+                    )
+                    st.markdown(
+                        f"<div class='discussieleider-box'>📖 <strong>Uitleg ({NIVEAU_LABELS[dm_niveau]}):</strong><br>{uitleg}</div>",
+                        unsafe_allow_html=True
+                    )
+    
+    with dm_col2:
+        if st.button("📚 Bronnen", use_container_width=True):
+            if dm_tekst and ENGINE_OK:
+                with st.spinner("Bronnen zoeken..."):
+                    bron = engine.zoek_bron(dm_tekst)
+                    if bron:
+                        if bron.get("standpunt") == "FAKENEWS":
+                            st.markdown(
+                                "<div class='fakenews-box'>⚠️ <strong>Let op! Dit lijkt op nepnieuws of onbetrouwbare informatie!</strong></div>",
+                                unsafe_allow_html=True
+                            )
+                        else:
+                            bron_info = engine.rag_retriever.format_source_for_user(bron)
+                            st.markdown(
+                                f"<div class='bron-box'>{format_bron_resultaat(bron_info, dm_tekst)}</div>",
+                                unsafe_allow_html=True
+                            )
+                    else:
+                        st.markdown(
+                            f"<div class='discussieleider-box'>{format_bron_resultaat(None, dm_tekst)}</div>",
+                            unsafe_allow_html=True
+                        )
     
     st.divider()
     
     # Notities
-    st.subheader("Schrijf hier je argumenten")
+    st.subheader("📝 Notities")
     st.session_state.aantekeningen = st.text_area(
         "Maak aantekeningen:",
         st.session_state.aantekeningen,
-        height=120,
+        height=100,
         label_visibility="collapsed"
     )
+    
     if st.session_state.aantekeningen:
         st.download_button(
-            "Download argumenten",
+            "💾 Download notities",
             st.session_state.aantekeningen,
             "notities.txt"
         )
-    
-    st.divider()
-    
-    # Nieuw gesprek knop
-    if st.button("🔄 Nieuwe chat", use_container_width=True):
-        st.session_state.messages = []
-        agent_namen = list(AGENTEN.keys())
-        random.shuffle(agent_namen)
-        st.session_state.agent_volgorde = agent_namen
-        st.rerun()
 
 # --- RECHTER KOLOM: Chat ---
 with col2:
-    st.subheader("Discussie in de chat")
+    st.subheader("💬 Discussie")
     
     # Chat container
     chat_container = st.container(height=480)
@@ -195,9 +280,15 @@ with col2:
                 else:
                     st.write(msg["content"])
     
-    # Chat input
-    if not agent_naam:
-        st.info("👆 Kies eerst een gesprekspartner")
+    # Status en input
+    if not ENGINE_OK:
+        st.error("⚠️ Engine niet beschikbaar")
+    elif not st.session_state.selected_model:
+        st.error("⚠️ Geen model beschikbaar")
+    elif not st.session_state.discussie_actief:
+        st.info("👈 Klik op 'Start Discussie' om te beginnen")
+    elif not agent_naam:
+        st.info("👆 Kies een gesprekspartner")
     else:
         if prompt := st.chat_input(f"Zeg iets tegen {agent_naam}..."):
             # User bericht toevoegen
@@ -206,52 +297,38 @@ with col2:
                 "content": prompt
             })
             
-            # Veiligheidscheck (vangrail)
+            # Veiligheidscheck
             if check_veiligheid(vangrail_client, prompt):
                 st.session_state.messages.append({
                     "role": "assistant",
-                    "content": "<div class='discussieleider-box'>👩‍🏫 Let op je taalgebruik!</div>",
+                    "content": "<div class='waarschuwing-box'>👩‍🏫 Let op je taalgebruik!</div>",
                     "is_html": True
                 })
             else:
-                # Response genereren
-                agent = AGENTEN[agent_naam]
-                
-                # Messages voorbereiden
-                messages = []
-                for msg in st.session_state.messages[:-1]:
-                    if msg["role"] in ["user", "assistant"] and not msg.get("is_html"):
-                        content = msg["content"]
-                        if ":\n\n" in content:
-                            content = content.split(":\n\n", 1)[-1]
-                        messages.append({"role": msg["role"], "content": content})
-                messages.append({"role": "user", "content": prompt})
-                
-                # Context en response
-                systeem_prompt = context_weaver(agent, st.session_state.messages[:-1])
-                
-                with st.spinner(f"{agent.naam} denkt na..."):
-                    response = genereer_response(
-                        clients,
-                        st.session_state.selected_model,
-                        systeem_prompt,
-                        messages,
-                        max_tokens=agent.max_tokens
+                # Response genereren via engine
+                with st.spinner(f"{agent_naam} denkt na..."):
+                    response = engine.genereer_response(
+                        agent_naam,
+                        prompt,
+                        st.session_state.messages[:-1],
+                        st.session_state.selected_model
                     )
                 
                 # Loggen
                 log_response(
-                    API_KEYS,
-                    st.session_state.selected_model,
-                    agent.naam,
-                    prompt,
-                    response
+                    model_id=response.model_id,
+                    model_info=response.model_info,
+                    agent_naam=response.agent_naam,
+                    vraag=prompt,
+                    antwoord=response.tekst,
+                    stelling=stelling.titel,
+                    bronnen=response.bronnen
                 )
                 
                 # Response toevoegen
                 st.session_state.messages.append({
                     "role": "assistant",
-                    "content": f"**{agent.naam}**:\n\n{response}",
+                    "content": f"**{response.agent_naam}**:\n\n{response.tekst}",
                     "is_html": False
                 })
             
@@ -266,16 +343,14 @@ st.divider()
 col_f1, col_f2 = st.columns([2, 1])
 
 with col_f1:
-    st.caption("Socrates Leertool Argumenteren")
+    st.caption(f"Socrates Leertool Argumenteren | Stelling: {stelling.id}")
 
 with col_f2:
     log_content = lees_log()
     if log_content:
         st.download_button(
-            "Download Log",
+            "📥 Download Log",
             log_content,
             "model_responses_log.json",
             "application/json"
         )
-    else:
-        st.caption("Nog geen log beschikbaar")
