@@ -11,7 +11,7 @@ CV_DATA = {
     "Jeroen van der Munt": {
         "hobby": "restaureert oldtimers in zijn garage",
         "gezin": "heeft twee volwassen kinderen",
-        "achtergrond": "werkte 20 jaar bij DAF Trucks"
+        "achtergrond": "werkte 20 jaar bij de politie als onderzoeker"
     },
     "Elaidya Basia": {
         "hobby": "kookt graag Marokkaanse gerechten",
