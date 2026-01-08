@@ -168,7 +168,7 @@ with col1:
     st.divider()
     
     # Agent selectie
-    st.subheader("👥 Gesprekspartner")
+    st.subheader("👥 Gesprekspartners")
     agent_naam = st.selectbox(
         "Kies wie je wilt spreken:",
         st.session_state.agent_volgorde,
@@ -191,7 +191,7 @@ with col1:
     st.divider()
     
     # Discussiemeester
-    st.subheader("👩‍🏫 Discussiemeester")
+    st.subheader("Begeleider discussie")
     
     dm_tekst = st.text_area(
         "Plak tekst uit de chat:",
