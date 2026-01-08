@@ -2,7 +2,7 @@
 Core Engine voor de Leertool Argumenteren
 =========================================
 
-Dit is de hoofd logica, onafhankelijk van de UI (Streamlit/React/etc).
+Dit is de logica van de app.
 """
 
 import random
@@ -130,6 +130,7 @@ Gebruik deze voorbeelden als inspiratie voor je toon en stijl, maar geef unieke 
             detail_type = random.choice(list(cv.keys()))
             detail = cv[detail_type]
             prompt_delen.append(f"""
+
 === PERSOONLIJK DETAIL ===
 VERWERK DIT SUBTIEL IN JE ANTWOORD: {detail}
 """)
@@ -141,6 +142,7 @@ VERWERK DIT SUBTIEL IN JE ANTWOORD: {detail}
             if user_msgs:
                 eerdere_msg = random.choice(user_msgs)["content"][:50]
                 prompt_delen.append(f"""
+
 === GESPREKSREFERENTIE ===
 VERWIJS KORT NAAR IETS DAT EERDER IS GEZEGD (bijv. over "{eerdere_msg}...")
 """)
