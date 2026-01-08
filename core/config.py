@@ -39,24 +39,6 @@ STELLINGEN = {
 Belangrijke onderwerpen: CO2-uitstoot, batterijproductie, stroomnet, laden, 
 bereik, kosten, grondstoffen (lithium, kobalt), en de energietransitie."""
     ),
-    
-    "social_media": Stelling(
-        id="social_media",
-        titel="Social media is slecht voor jongeren",
-        beschrijving="Discussie over de invloed van social media op jongeren",
-        context="""Dit gaat over platforms zoals TikTok, Instagram, Snapchat.
-Belangrijke onderwerpen: schermtijd, mentale gezondheid, cyberpesten, 
-FOMO, privacy, algoritmes, en online veiligheid."""
-    ),
-    
-    "huiswerk": Stelling(
-        id="huiswerk",
-        titel="Huiswerk moet worden afgeschaft",
-        beschrijving="Discussie over nut en noodzaak van huiswerk",
-        context="""Dit gaat over huiswerk op de basisschool en middelbare school.
-Belangrijke onderwerpen: leerprestaties, stress, vrije tijd, 
-zelfstandigheid, ongelijkheid (thuissituatie), en motivatie."""
-    ),
 }
 
 
